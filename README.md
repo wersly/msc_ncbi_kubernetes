@@ -13,6 +13,8 @@ Below are my notes outlining the process from setting up the cluster, to running
 - `kubectl`
 - `terraform`
 
+I acknowledge that my work here may still be incorrect per the requirements of task 2, but it's certainly a step forward from what I initially submitted!
+
 # Create EKS cluster
 ```bash
 cd aws
