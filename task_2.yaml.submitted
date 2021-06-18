@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+
+# REQUIREMENTS:
+# run on port 3000
+# replica of 3
+# liveness probe to /healthz on port 3000, initial delay of 10 seconds
+# readiness probe to / on port 3000, delay 10, every second, gives up after 2 failures
+
+spec:
+  replicas: 3
+  containers:
+    -
+      name: shop-backend
+      image: hub.example.com/shop-backend;1.0.0
+      ports:
+        - containerPort: 3000
+
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 3000
+        initialDelaySeconds: 10
+
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDealySeconds: 10
+        periodSeconds: 1
+        failureThreshold: 2

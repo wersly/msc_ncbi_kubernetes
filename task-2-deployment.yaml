@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat
+  labels:
+    name: tomcat
+
+spec:
+  selector:
+    matchLabels:
+      run: tomcat
+
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+
+  replicas: 3
+
+  template:
+    metadata:
+      labels:
+        run: tomcat
+
+    spec:
+      containers:
+        -
+          image: bitnami/tomcat
+          name: tomcat
+          ports:
+            -
+              containerPort: 8080
+              name: http
+              protocol: TCP
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 1
+            failureThreshold: 2
